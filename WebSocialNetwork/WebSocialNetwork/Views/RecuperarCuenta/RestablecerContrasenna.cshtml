@@ -1,0 +1,72 @@
+﻿
+@model WebSocialNetwork.Entities.Usuario
+@{
+    ViewData["Title"] = "Restablecer Contraseña";
+    Layout = "~/Views/Shared/_Layout-Externo.cshtml";
+    TempData["Correo"] = Model.Correo;
+}
+
+<div class="wrapper">
+    <main class="authentication-content">
+        <div class="container-fluid">
+            <div class="authentication-card">
+                <div class="card shadow rounded-3 overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-lg-6 d-flex align-items-center justify-content-center border-end">
+                            <img src="https://img.freepik.com/free-vector/secure-data-concept-illustration_114360-2510.jpg?w=740&amp;t=st=1662791352~exp=1662791952~hmac=d90f717a99823008ce52a92f59fc382488f46baa82e2bfb150908a693efadd4b" class="img-fluid" alt="">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card-body p-4 p-sm-5">
+                                <h5 class="card-title">Restablecer contraseña</h5>
+                                <p class="card-text ">Te hemos enviado una contraseña temporal a @Model.Correo. Ingresa la contraseña temporal en conjunto a la nueva contraseña para recuperar su cuenta.</p>
+
+                                @using (Html.BeginForm("RestablecerContrasenna", "RecuperarCuenta", FormMethod.Post, new { @class = "form-body" }))
+                                {
+                                    <div class="row g-3">
+
+                                        <input type="hidden" name="Correo" value=@Model.Correo />
+
+                                        <div class="col-12">
+                                            <label for="inputContrasena1" class="form-label">Contraseña Temporal:</label>
+
+                                            @Html.TextBoxFor(m => m.ContrasennaTemporal, new { @type = "text", @class = "form-control", @placeholder = "Contraseña Temporal", @required = "required" })
+
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="Contrasenna" class="form-label">Nueva Contraseña:</label>
+
+                                            @Html.TextBoxFor(m => m.Contrasenna, new { @type = "password", @class = "form-control", @placeholder = "Nueva Contraseña" , @required = "required" })
+
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-grid gap-3 mb-3">
+                                                <button type="submit" class="btn btn-primary">Restablecer</button>
+                                                <a href="@Url.Action("IniciarSesion", "Cuentas")" class="btn btn-danger">Cancelar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (ViewBag.MsjPantalla != null)
+                                {
+                                    <div class="alert border-0 bg-light-danger alert-dismissible fade show">
+                                        <div class="text-danger">@ViewBag.MsjPantalla</div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                }
+
+                                <p class="card-text mb-5">No has recibido ningun contrase temporal? Comprueba tu carpeta de correo no deseado.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!--end page main-->
+
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/pace.min.js"></script>
+

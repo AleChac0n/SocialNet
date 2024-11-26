@@ -1,0 +1,132 @@
+﻿@model WebSocialNetwork.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Registrarse";
+    Layout = "~/Views/Shared/_Layout-Externo.cshtml";
+    String FechaMaxima = DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd");
+}
+
+
+<main class="authentication-content">
+    <div class="container">
+        <div class="mt-4">
+            <div class="card rounded-0 overflow-hidden shadow-none bg-white border">
+                <div class="row g-0">
+                    <div class="col-12 order-1 col-xl-4 d-flex align-items-center justify-content-center border-end">
+                        <img src="/images/error/auth-img-register3.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-12 col-xl-8 order-xl-2">
+                        <div class="card-body p-4 p-sm-5">
+                            <h5 class="card-title">Registrarse</h5>
+                            <p class="card-text mb-4">Ingrese los datos a continuación para crear una cuenta</p>
+
+                            <form asp-action="Registrarse" asp-controller="Cuentas" method="post" class="form-body">
+                                <div class="row g-3">
+                                    <div class="col-4 ">
+                                        <label asp-for="Nombre" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="bi bi-person-circle"></i>
+                                            </div>
+                                            <input asp-for="Nombre" class="form-control radius-30 ps-5" 
+                                                   placeholder="Nombre">
+                                        </div>
+                                        <span asp-validation-for="Nombre" class="text-danger"></span>
+
+                                    </div>
+
+                                    <div class="col-4 ">
+                                        <label asp-for="Apellido1" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="bi bi-person-circle"></i>
+                                            </div>
+                                            <input asp-for="Apellido1" class="form-control radius-30 ps-5"
+                                                   placeholder="Primer apellido">
+                                        </div>
+                                        <span asp-validation-for="Apellido1" class="text-danger"></span>
+
+                                    </div>
+
+                                    <div class="col-4 ">
+                                        <label asp-for="Apellido2" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="bi bi-person-circle"></i>
+                                            </div>
+                                            <input asp-for="Apellido2" class="form-control radius-30 ps-5"
+                                                   placeholder="Segundo apellido">
+                                        </div>
+                                        <span asp-validation-for="Apellido2" class="text-danger"></span>
+
+                                    </div>
+                                    
+                                    <div class="col-12 ">
+                                        <label asp-for="FechaNacimiento" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="fa-solid fa-calendar-days"></i>
+                                            </div>
+                                            <input asp-for="FechaNacimiento" type="date" class="form-control radius-30 ps-5" min="1934-01-01" max="@FechaMaxima">
+                                        </div>
+                                        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+
+                                    </div>
+
+                                    <div class="col-12 ">
+                                        <label class="form-label" for="">Género</label>
+                                        @Html.DropDownListFor(m=>Model.ID_Genero, ViewBag.Generos as SelectList, "Seleccione un género.", htmlAttributes: new { @class = "form-control", @required = "required" })
+
+
+                                    </div>
+
+                                    <div class="col-12 ">
+                                        <label asp-for="Correo" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </div>
+                                            <input asp-for="Correo" class="form-control radius-30 ps-5"
+                                                   placeholder="Correo electrónico">
+                                        </div>
+                                        <span asp-validation-for="Correo" class="text-danger"></span>
+
+                                    </div>
+
+                                    <div class="col-12 ">
+                                        <label asp-for="Contrasenna" class="form-label"></label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="fa-solid fa-lock"></i>
+                                            </div>
+                                            <input asp-for="Contrasenna" class="form-control radius-30 ps-5"
+                                                   placeholder="Contraseña">
+                                            <span asp-validation-for="Contrasenna" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    @if (ViewBag.MsjPantalla != null)
+                                    {
+                                        <div class="alert alert-warning" role="alert" style="text-align:center">
+                                            @ViewBag.MsjPantalla
+                                        </div>
+                                    }
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary radius-30">Registrarse</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="mb-0">
+                                            ¿Ya tienes una cuenta? <a href="@Url.Action("IniciarSesion", "Cuentas" )">Ingresa aquí</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

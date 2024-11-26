@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Nueva Contrasena";
+    Layout = "~/Views/Shared/_Layout-Externo.cshtml";
+}
+
+
+<main class="authentication-content">
+    <div class="container-fluid">
+        <div class="authentication-card">
+            <div class="card shadow rounded-5 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center border-end">
+                        <img src="https://img.freepik.com/free-vector/secure-data-concept-illustration_114360-2510.jpg?w=740&amp;t=st=1662791352~exp=1662791952~hmac=d90f717a99823008ce52a92f59fc382488f46baa82e2bfb150908a693efadd4b"
+                            class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body p-4 p-sm-5">
+                            <h5 class="card-title">Generar nueva contraseña</h5>
+                            <p class="card-text mb-5">Recibimos su solicitud de recuperacion de contraseña. Por favor
+                                ingrese su nueva contraseña</p>
+                            <form class="form-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="inputNewPassword" class="form-label">Nueva Contraseña</label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i
+                                                    class="bi bi-lock-fill"></i></div>
+                                            <input type="email" class="form-control radius-30 ps-5"
+                                                id="inputNewPassword" placeholder="Ingrese la nueva contraseña">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="inputConfirmPassword" class="form-label">Contraseña
+                                            Confirmada</label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i
+                                                    class="bi bi-lock-fill"></i></div>
+                                            <input type="password" class="form-control radius-30 ps-5"
+                                                id="inputConfirmPassword" placeholder="Confirme la contraseña">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-grid gap-3">
+                                            <button type="submit" class="btn btn-warning radius-30">Cambiar
+                                                Contraseña</button>
+                                            <a asp-action="IniciarSesion" class="btn btn-light radius-30">Regresar a Iniciar
+                                                Sesion</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

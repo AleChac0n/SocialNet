@@ -1,0 +1,61 @@
+﻿@model WebSocialNetwork.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Recuperación de Cuenta";
+    Layout = "~/Views/Shared/_Layout-Externo.cshtml";
+}
+
+
+    <main class="authentication-content   d-flex align-items-center" style="height:87vh">
+        <div class="container-fluid">
+            <div class="authentication-card">
+                <div class="card shadow rounded-3 overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-lg-6  d-flex align-items-center justify-content-center border-end">
+                            <img src="https://img.freepik.com/free-vector/man-thinking-concept-illustration_114360-7990.jpg?w=740&amp;t=st=1662791646~exp=1662792246~hmac=a0cee1f7c7f898b2b47bfafc0c477f3f0ef9151e3488056c41b74ae4a3e6acb9" class="img-fluid" alt="">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card-body p-4 p-sm-5">
+                                <h5 class="card-title">¿Olvidó la contraseña?</h5>
+                                <p class="card-text mb-5">Ingrese su correo registrado en SocialNetwork para enviarle una contraseña temporal</p>
+
+                                @using (Html.BeginForm("RecuperacionCuenta", "RecuperarCuenta", FormMethod.Post, new { @class = "form-body" }))
+                                {
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="inputEmailAddress" class="form-label">Correo:</label>
+
+                                            @Html.TextBoxFor(m => m.Correo, new { @type = "email", @class = "form-control", @placeholder = "Correo", @id = "inputEmailAddress" })
+
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-grid gap-3">
+                                                @if (ViewBag.MsjPantalla != null)
+                                                {
+                                                    <div class="alert border-0 bg-light-danger alert-dismissible fade show">
+                                                        <div class="text-danger">@ViewBag.MsjPantalla</div>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                }
+                                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                                <div class="col-12 text-center">
+                                                    <p class="mb-0">
+                                                        <a href="@Url.Action("IniciarSesion", "Cuentas")" class=""> Regresar a Inicio de Sesión</a>
+                                                    </p>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+

@@ -1,0 +1,183 @@
+﻿@model WebSocialNetwork.Entities.Publicacion
+
+@{
+    ViewData["Title"] = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-7">
+
+            <div class="card text-center border-0 bg-black cursor-pointer" data-bs-toggle="modal" data-bs-target="#CrearPublicacion">
+
+                <div class="row p-3 align-items-center">
+                    <div class="col-1 ">
+                        <img src="@Context.Session.GetString("FotoPerfil")" class="rounded-circle float-left" style="object-fit:cover" height="50" width="50" alt="...">
+                    </div>
+                    <div class="col-11">
+                        <div class="bg-secondary text-light rounded p-1 text-start">¿Qué estás pensando, @Context.Session.GetString("Nombre")? </div>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                    <div class="col-12">
+                        <div class="text-light">+ Agregar publicación </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="CrearPublicacion" tabindex="-1" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crear Publicación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="CrearPublicacion" asp-controller="Publicacion" method="post" class="row g-3" enctype="multipart/form-data">
+                                <div class="col-12">
+                                    <label class="form-label">Ingrese el url de su imagen</label>
+                                    <input type="file" class="form-control" name="imgPublicacion" id="imgPublicacion" accept=".png">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">País</label>
+                                    <select asp-for="Pais" id="select-country" class="form-select">
+                                        <option value="" disabled selected>Selecciona un país</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Ciudad</label>
+                                    <select asp-for="Estado" id="select-city" class="form-select">
+                                        <option value="" disabled selected>Selecciona un país primero</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">¿Qué estás pensando?</label>
+                                    <textarea asp-for="TextoContenido" class="form-control" rows="4" cols="4" placeholder="Escribe aquí..."></textarea>
+                                </div>
+                                <div class="text-start">
+                                    <button id="publish-button" type="submit" class="btn btn-primary px-4">Publicar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    @foreach (var publicacion in ViewBag.Publicaciones)
+                    {
+                        <div class="col-12">
+                            <div class="card border-0 mb-4">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <input type="hidden" id="ID_Publicacion" value="@publicacion.ID_Publicacion" />
+                                        <input type="hidden" id="ID_Usuario" value="@Context.Session.GetString("IdUsuario")" />
+
+                                        <div class="col-4">
+                                            <a asp-action="Perfil" asp-controller="Cuentas" asp-route-IdUsuario="@publicacion.ID_Usuario">
+                                                <img src="@publicacion.UrlFotoPerfil" class="img-fluid rounded-circle" alt="Foto de perfil" style=" height:50px; width:50px;">
+                                            </a>
+                                        </div>
+                                        <div class="col-8">
+                                            <h5 class="mb-0">@publicacion.Nombre</h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p>@publicacion.TextoContenido</p>
+                                    <em><i class="fa fa-map" aria-hidden="true"></i> @publicacion.Estado, @publicacion.Pais</em>
+                                    <img src="@publicacion.UrlFotoPublicacion" class="img-fluid" alt="Publicación" style="margin-top: 20px">
+                                </div>
+                                <div class="card-footer">
+
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <!-- En tu HTML -->
+                                            <button class="btn-reaccion" data-reaccion="MeGusta" onclick="reaccionar(this)">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button class="btn-reaccion" data-reaccion="NoMeGusta" onclick="reaccionar(this)">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </button>
+
+
+                                            <p id="contador-me-gusta">@publicacion.MeGusta</p>
+                                            <p id="contador-no-me-gusta">@publicacion.NoMeGusta</p>
+
+                                        </div>
+                                        <p class="mb-0 justify-content-end" style="cursor: pointer;"><i class="fa fa-comments" aria-hidden="true"></i> Comentar</p> 
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/countries-now.js"></script>
+
+<script>
+    function reaccionar(btn) {
+        var idPublicacion = $(btn).closest('.card').find('#ID_Publicacion').val();
+        var idUsuario = $(btn).closest('.card').find('#ID_Usuario').val();
+        var tipoReaccion = $(btn).data('reaccion');
+        
+        console.log(idPublicacion);
+        console.log(idUsuario);
+        console.log(tipoReaccion);
+
+
+
+        $.ajax({
+            url: '/Publicacion/CrearReacciones',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                ID_Publicacion: idPublicacion,
+                ID_Usuario: idUsuario,
+                TipoReaccion: tipoReaccion
+            }),
+
+            success: function (data) {
+                console.log(data);
+
+                if (data.codigo === '00') {
+                    consultarReacciones(idPublicacion);
+                } else {
+                    console.log("Error al crear reacción");
+                }
+            },
+            error: function () {
+                console.log("Error en la solicitud AJAX para crear reacción");
+            }
+        });
+    }
+
+    function consultarReacciones(idPublicacion) {
+        $.ajax({
+            url: '/Publicacion/ConsultarReaccionesPorPublicacion?ID_Publicacion=' + idPublicacion,
+            type: 'GET',
+            success: function (respuesta) {
+                if (respuesta.codigo === '00') {
+                    // Si la respuesta es exitosa, actualiza los contadores de reacciones en la interfaz
+                    $('#contador-me-gusta').text(respuesta.dato.meGusta);
+                    $('#contador-no-me-gusta').text(respuesta.dato.noMeGusta);
+                } else {
+                    console.log("Error al consultar reacciones por publicación");
+                }
+            },
+            error: function () {
+                console.log("Error en la solicitud AJAX para consultar reacciones por publicación");
+            }
+        });
+    }
+
+</script>
+
+                    

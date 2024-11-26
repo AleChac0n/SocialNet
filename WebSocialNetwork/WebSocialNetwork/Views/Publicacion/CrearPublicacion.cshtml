@@ -1,0 +1,96 @@
+﻿@model WebSocialNetwork.Entities.Publicacion
+
+@{
+    ViewData["Title"] = "CrearPublicacion";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h2 class="mb-0">Nueva Publicación</h2>
+        <hr>
+        <div class="card shadow-none border">
+            <div class="card-header">
+                <h6 class="mb-0">Inspirate</h6>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="CrearPublicacion" asp-controller="Publicacion" method="post" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Ingrese el url de su imagen</label>
+                        <input asp-for="UrlFotoPublicacion" class="form-control radius-30 ps-5"
+                               placeholder="Imagen">
+                        <!--<input type="file" class="form-control" name="profile_image" accept="image/*">-->
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">País</label>
+                        <select asp-for="Pais" id="select-country" class="form-select">
+                            <option value="" disabled selected>Selecciona un país</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Ciudad</label>
+                        <select asp-for="Estado" id="select-city" class="form-select">
+                            <option value="" disabled selected>Selecciona un país primero</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">¿Qué estás pensando?</label>
+                        <textarea asp-for="TextoContenido" class="form-control" rows="4" cols="4" placeholder="Escribe aquí..."></textarea>
+                    </div>
+                    <div class="text-start">
+                        <button id="publish-button" type="submit" class="btn btn-primary px-4">Publicar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Obtiene los paises
+    fetch('https://countriesnow.space/api/v0.1/countries')
+        .then(response => response.json())
+        .then(data => {
+            const selectCountry = document.getElementById('select-country');
+            data.data.forEach(country => {
+                const option = document.createElement('option');
+                option.text = country.country;
+                option.value = country.country;
+                selectCountry.add(option);
+            });
+        })
+        .catch(error => console.error('Error fetching countries:', error));
+
+    // Actualiza las ciudades con el pais seleccionado
+    document.getElementById('select-country').addEventListener('change', function () {
+        const selectedCountry = this.value;
+        const selectCity = document.getElementById('select-city');
+        selectCity.innerHTML = '<option value="" disabled selected>Cargando...</option>';
+
+        const settings = {
+            method: 'POST',
+            body: JSON.stringify({ country: selectedCountry }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+        fetch('https://countriesnow.space/api/v0.1/countries/states', settings)
+            .then(response => response.json())
+            .then(data => {
+                selectCity.innerHTML = '';
+                const cities = data.data.states;
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.text = city.name;
+                    option.value = city.name;
+                    selectCity.add(option);
+                    console.log(city)
+                });
+                console.log(city)
+            })
+            .catch(error => console.error('Error fetching cities:', error));
+    });
+</script>

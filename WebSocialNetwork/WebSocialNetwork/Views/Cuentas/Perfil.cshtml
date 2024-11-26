@@ -1,0 +1,138 @@
+﻿@model WebSocialNetwork.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-8 p-0">
+            <div class="card shadow-sm border-0 overflow-hidden pb-3">
+                &nbsp;
+
+                <div class="profile-avatar text-center">
+                    <img src="@Model.UrlFotoPerfil" class="rounded-circle shadow " width="120" height="120" style="object-fit: cover;">
+                </div>
+                <div class="d-flex align-items-center justify-content-around mt-5 gap-3">
+                    <div class="text-center">
+                        <h4 class="mb-0">@Model.CantidadAmistades</h4>
+                        <p class="mb-0 text-secondary">Amistades</p>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="mb-0">@Model.CantidadPublicaciones</h4>
+                        <p class="mb-0 text-secondary">Publicaciones</p>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="mb-0">@Model.TotalMeGusta</h4>
+                        <p class="mb-0 text-secondary">Me gustas</p>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <h4 class="mb-1">@Model.Nombre @Model.Apellido1 @Model.Apellido2</h4>
+                    <p class="mb-0 text-secondary">Nací el @Model.FechaNacimiento.ToString("dd/MM/yyyy")</p>
+                    <br />
+                    <p class="mb-0 text-secondary">@Model.SobreMi</p>
+                </div>
+                <div class="text-center mt-4">
+                    @if (Model.ID_Usuario != int.Parse(Context.Session.GetString("IdUsuario")))
+                    {
+                        if (ViewBag.Amistad == null)
+                        {
+                            <a class="btn btn-primary" href="@Url.Action("EnviarSolicitudAmistad", "Amistades", new { ID_Usuario= Model.ID_Usuario })"><i class="fa-solid fa-user-plus"></i> Agregar amigo</a>
+                        }
+                        else
+
+                        {
+                            WebSocialNetwork.Entities.AmistadesEnt amistad = ViewBag.Amistad as WebSocialNetwork.Entities.AmistadesEnt;
+
+                            if (amistad.ID_EstadoAmistad == 1 && amistad.ID_UsuarioEmisorSolicitud == int.Parse(Context.Session.GetString("IdUsuario")) )
+                            {
+                                <a class="btn btn-primary" href="@Url.Action("CancelarSolicitudAmistad", "Amistades", new { ID_Amistad = amistad.ID_Amistad })"><i class="fa-solid fa-user-xmark"></i> Cancelar solicitud</a>
+                            }
+
+                            if (amistad.ID_EstadoAmistad == 1 && amistad.ID_UsuarioEmisorSolicitud != int.Parse(Context.Session.GetString("IdUsuario"))) {
+                                <a class="btn btn-primary" href="@Url.Action("ConfirmarSolicitudAmistad", "Amistades", new { ID_Amistad = amistad.ID_Amistad })"><i class="fa-solid fa-user-check"></i> Confirmar Solicitud</a>
+                            }
+
+
+                            if (amistad.ID_EstadoAmistad == 2)
+                            {
+                                <a class="btn btn-secundary" disable>Amigos</a>
+                            }
+
+                        }
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-8 p-0">
+            @foreach (var publicacion in ViewBag.Publicaciones)
+            {
+                <div class="card border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <a asp-action="Perfil" asp-controller="Cuentas" asp-route-IdUsuario="@publicacion.ID_Usuario">
+                                    <img src="@publicacion.UrlFotoPerfil" class="rounded-circle float-left" style="object-fit:cover" height="50" width="50" alt="...">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <h5 class="mb-0">@publicacion.Nombre</h5>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="mb-4">@publicacion.TextoContenido</p>
+                        <img src="@publicacion.UrlFotoPublicacion" class="img-fluid" alt="Publicación">
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-0"><i class="fa-solid fa-heart"></i>1000</p>
+                            <p class="mb-0"><i class="fa-solid fa-comment-dots"></i>250</p>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-0" style="cursor: pointer;"><i class="fa-regular fa-heart"></i> Me Gusta</p>
+                            <p class="mb-0" style="cursor: pointer;"><i class="fa-regular fa-comment-dots"></i> Comentar</p>
+                            <p class="mb-0" style="cursor: pointer;"><i class="fa-regular fa-share-from-square"></i> Compartir</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+    <div class="text-center mt-4">
+
+        @if (Model.ID_Usuario != long.Parse(Context.Session.GetString("IdUsuario")))
+        {
+            var nombresUsuarios = Context.Session.GetString("Nombre") + " y " + Model.Nombre;
+            <button type="button" class="btn btn-sm btn-primary" data-bind="click: function() { createRoom('@nombresUsuarios', '@Model.ID_Usuario') }">Enviar mensaje</button>
+        }
+
+
+    </div>
+    &nbsp;
+</div>
+
+
+
+@section Scripts {
+    <script src="~/lib/knockout/build/output/knockout-latest.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+</script>
+
+
+
+
+

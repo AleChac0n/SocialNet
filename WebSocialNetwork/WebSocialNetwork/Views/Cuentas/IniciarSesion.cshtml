@@ -1,0 +1,78 @@
+﻿@model WebSocialNetwork.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Iniciar Sesion";
+    Layout = "~/Views/Shared/_Layout-Externo.cshtml";
+}
+<main class="authentication-content  d-flex align-items-center" style="height:90vh">
+    <div class="container">
+        <div class="mt-4">
+            <div class="card rounded-0 overflow-hidden shadow-none border mb-5 mb-lg-0">
+                <div class="row g-0">
+                    <div class="col-12 order-1 col-xl-8 d-flex align-items-center justify-content-center border-end">
+                        <img src="/images/error/auth-img-7.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-12 col-xl-4 order-xl-2">
+                        <div class="card-body p-4 p-sm-5">
+                            <h5 class="card-title">Ingreso de Sesión</h5>
+                            <p class="card-text mb-4">Ingrese sus credenciales para acceder</p>
+                            <form asp-action="IniciarSesion" asp-controller="Cuentas" method="post" class="form-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label asp-for="Correo" class="form-label">Correo:</label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="bi bi-envelope-fill"></i>
+                                            </div>
+                                            <input asp-for="Correo" class="form-control radius-30 ps-5"
+                                                   placeholder="Correo electrónico">
+                                        </div>
+                                        <span asp-validation-for="Correo" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="col-12">
+                                        <label asp-for="Contrasenna" class="form-label">Contraseña</label>
+                                        <div class="ms-auto position-relative">
+                                            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                                                <i class="bi bi-lock-fill"></i>
+                                            </div>
+                                            <input asp-for="Contrasenna" class="form-control radius-30 ps-5"
+                                                   placeholder="Contraseña">
+                                        </div>
+                                        <span asp-validation-for="Contrasenna" class="text-danger"></span>
+
+                                    </div>
+                                    
+                                    @if (ViewBag.MsjPantalla != null)
+                                    {
+                                        <div class="alert alert-warning" role="alert" style="text-align:center">
+                                            @ViewBag.MsjPantalla
+                                        </div>
+                                    }
+
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary radius-30">Ingresar</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <a href="@Url.Action("RecuperacionCuenta", "RecuperarCuenta")">
+                                            ¿Has olvidado tu
+                                            contraseña?
+                                        </a>
+                                    </div>
+
+                                    <div class="col-12 text-center">
+                                        <p class="mb-0">
+                                            ¿Todavía no tienes una cuenta? <a href="@Url.Action("Registrarse", "Cuentas" )">Regístrate aquí.</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

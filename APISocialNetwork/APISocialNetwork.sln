@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiSocialNetwork", "ApiSocialNetwork.csproj", "{A5BAFF11-FD95-42D4-BB58-2DCBF826D47B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5BAFF11-FD95-42D4-BB58-2DCBF826D47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5BAFF11-FD95-42D4-BB58-2DCBF826D47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5BAFF11-FD95-42D4-BB58-2DCBF826D47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5BAFF11-FD95-42D4-BB58-2DCBF826D47B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8FA82CD1-1EA1-45DE-BD6C-18B5FB2DC03E}
+	EndGlobalSection
+EndGlobal
